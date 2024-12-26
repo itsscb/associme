@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "mirage-ng": {
+        "associme": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -17,7 +17,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/mirage-ng",
+                        "outputPath": "dist/associme",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": [
@@ -75,14 +75,14 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "mirage-ng:build"
+                        "browserTarget": "associme:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "mirage-ng:build:production"
+                            "browserTarget": "associme:build:production"
                         },
                         "development": {
-                            "browserTarget": "mirage-ng:build:development"
+                            "browserTarget": "associme:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -90,7 +90,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "mirage-ng:build"
+                        "browserTarget": "associme:build"
                     }
                 },
                 "test": {
@@ -130,8 +130,8 @@
             }
         }
     },
-    "defaultProject": "mirage-ng",
+    "defaultProject": "associme",
     "cli": {
-      "analytics": "642862f5-e7b4-4d74-8e02-29362cf4113a"
+        "analytics": "642862f5-e7b4-4d74-8e02-29362cf4113a"
     }
 }

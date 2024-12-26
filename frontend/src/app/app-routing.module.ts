@@ -25,7 +25,7 @@ import { AppMainComponent } from './app.main.component';
 // import {AppNotfoundComponent} from './pages/app.notfound.component';
 // import {AppErrorComponent} from './pages/app.error.component';
 // import {AppAccessdeniedComponent} from './pages/app.accessdenied.component';
-// import {AppLoginComponent} from './pages/app.login.component';
+import { AppLoginComponent } from './pages/app.login.component';
 // import {AppCrudComponent} from './pages/app.crud.component';
 // import {AppCalendarComponent} from './pages/app.calendar.component';
 // import {AppTimelineDemoComponent} from './pages/app.timelinedemo.component';
@@ -68,9 +68,9 @@ import { BlocksComponent } from './blocks/blocks/blocks.component';
             // {path: 'error', component: AppErrorComponent},
             // {path: 'accessdenied', component: AppAccessdeniedComponent},
             // {path: 'notfound', component: AppNotfoundComponent},
-            // {path: 'login', component: AppLoginComponent},
+            { path: 'login', component: AppLoginComponent },
             { path: '**', redirectTo: '/notfound' },
-        ], { scrollPositionRestoration: 'enabled' })
+        ], { scrollPositionRestoration: 'enabled', useHash: false })
     ],
     exports: [RouterModule]
 })
