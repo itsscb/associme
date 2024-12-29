@@ -33,7 +33,10 @@ pub async fn login(
             info!(email = &auth.email);
             (
                 StatusCode::OK,
-                axum::response::Json(json!({"token": "login successful"})),
+                // TODO: Replace this with a Session token
+                axum::response::Json(
+                    json!({"token": "login successful", "expires_at": "2029-12-31T23:59:59"}),
+                ),
             )
                 .into_response()
         },
