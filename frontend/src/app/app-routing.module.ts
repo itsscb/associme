@@ -30,6 +30,7 @@ import { AppLoginComponent } from './pages/app.login.component';
 // import {AppCalendarComponent} from './pages/app.calendar.component';
 // import {AppTimelineDemoComponent} from './pages/app.timelinedemo.component';
 import { BlocksComponent } from './blocks/blocks/blocks.component';
+import { AuthGuardService } from './service/auth-guard.service';
 
 @NgModule({
     imports: [
@@ -62,7 +63,7 @@ import { BlocksComponent } from './blocks/blocks/blocks.component';
                     // {path: 'components/charts', component: ChartsDemoComponent},
                     // {path: 'components/file', component: FileDemoComponent},
                     // {path: 'documentation', component: DocumentationComponent},
-                    { path: 'blocks', component: BlocksComponent },
+                    { path: 'blocks', component: BlocksComponent, canActivate: [AuthGuardService] },
                 ]
             },
             // {path: 'error', component: AppErrorComponent},

@@ -143,6 +143,7 @@ import { ConfigService } from './service/app.config.service';
 import { BreadcrumbService } from './breadcrumb.service';
 import { MenuService } from './app.menu.service';
 import { AppCodeModule } from './blocks/app-code/app.code.component';
+import { AuthService } from './service/auth.service';
 
 @NgModule({
     imports: [
@@ -277,7 +278,7 @@ import { AppCodeModule } from './blocks/app-code/app.code.component';
         // CountryService, CustomerService, EventService, IconService, NodeService,
         // PhotoService, ProductService,
         ConfigService,
-        MenuService, BreadcrumbService,
+        MenuService, BreadcrumbService, AuthService
     ],
     bootstrap: [AppComponent]
 })
