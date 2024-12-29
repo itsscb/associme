@@ -12,6 +12,7 @@ use axum::{
     routing::{get, post},
 };
 use errors::ApplicationError;
+use pasetors::{keys::AsymmetricKeyPair, version4::V4};
 use tower_http::services::{ServeDir, ServeFile};
 
 fn hash_password(password: &str) -> Result<String, ApplicationError> {
@@ -30,18 +31,18 @@ fn verify_password(password: &str, password_hash: &str) -> Result<bool, Applicat
         .is_ok())
 }
 
-pub fn router(pool: sqlx::PgPool) -> axum::Router {
+pub fn router(pool: sqlx::PgPool, keypair: AsymmetricKeyPair<V4>) -> axum::Router {
+    let config = Config::new(keypair, pool);
+
     Router::new()
         .nest(
             "/api",
-            Router::new()
-                .nest(
-                    "/account",
-                    Router::new()
-                        .route("/registration", post(registration))
-                        .route("/login", post(login)),
-                )
-                .with_state(pool),
+            Router::new().nest(
+                "/account",
+                Router::new()
+                    .route("/registration", post(registration))
+                    .route("/login", post(login)),
+            ),
         )
         // .route("/login", get(show_login_form))
         .route("/registration", get(show_registration_form))
@@ -50,4 +51,17 @@ pub fn router(pool: sqlx::PgPool) -> axum::Router {
             ServeDir::new("frontend/dist/associme")
                 .fallback(ServeFile::new("frontend/dist/associme/index.html")),
         )
+        .with_state(config)
+}
+
+#[derive(Clone)]
+struct Config {
+    keypair: AsymmetricKeyPair<V4>,
+    pool: sqlx::PgPool,
+}
+
+impl Config {
+    pub const fn new(keypair: AsymmetricKeyPair<V4>, pool: sqlx::PgPool) -> Self {
+        Self { keypair, pool }
+    }
 }

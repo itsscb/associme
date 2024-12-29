@@ -41,14 +41,21 @@ pub async fn get_account_by_email(
     Ok(account)
 }
 
+struct AccountAuth {
+    id: String,
+    password_hash: String,
+    role: String,
+}
+
 #[tracing::instrument(skip(pool))]
 pub async fn login(
     pool: sqlx::PgPool,
     email: &str,
     password: &str,
-) -> Result<(), ApplicationError> {
-    let password_hash: String = sqlx::query_scalar!(
-        "SELECT password_hash 
+) -> Result<(String, String), ApplicationError> {
+    let result: AccountAuth = sqlx::query_as!(
+        AccountAuth,
+        "SELECT id, password_hash, role 
         FROM accounts 
         WHERE email = $1
         LIMIT 1",
@@ -57,9 +64,9 @@ pub async fn login(
     .fetch_one(&pool)
     .await?;
 
-    if password_hash.is_empty() || !verify_password(password, &password_hash)? {
+    if result.password_hash.is_empty() || !verify_password(password, &result.password_hash)? {
         return Err(ApplicationError::Unauthorized);
     }
 
-    Ok(())
+    Ok((result.id, result.role))
 }

@@ -8,7 +8,7 @@ use tracing::{info, warn};
 
 #[shuttle_runtime::main]
 async fn main(#[shuttle_shared_db::Postgres] pool: sqlx::PgPool) -> shuttle_axum::ShuttleAxum {
-    let _keypair = read_keypair().unwrap_or_else(|_| {
+    let keypair = read_keypair().unwrap_or_else(|_| {
         warn!("Could not read Paseto Keypair, generating a temporary pair");
         generate_keypair().expect("Could not generate Paseto Keypair")
     });
@@ -20,7 +20,7 @@ async fn main(#[shuttle_shared_db::Postgres] pool: sqlx::PgPool) -> shuttle_axum
         .await
         .expect("Failed to run migrations");
 
-    let router = associme::router(pool);
+    let router = associme::router(pool, keypair);
 
     Ok(router.into())
 }

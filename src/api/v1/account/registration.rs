@@ -2,16 +2,16 @@ use axum::{Form, extract::State, http::StatusCode, response::IntoResponse};
 use serde_json::json;
 use tracing::{error, info, instrument};
 
-use crate::db;
+use crate::{Config, db};
 
 use super::AccountAuth;
 
-#[instrument(skip(pool, auth))]
+#[instrument(skip(config, auth))]
 pub async fn registration(
-    State(pool): State<sqlx::PgPool>,
+    State(config): State<Config>,
     Form(auth): Form<AccountAuth>,
 ) -> impl IntoResponse {
-    (db::account::create_account(pool, &auth.email, &auth.password).await).map_or_else(
+    (db::account::create_account(config.pool, &auth.email, &auth.password).await).map_or_else(
         |e| {
             error!(email = &auth.email, error = ?e);
             (
