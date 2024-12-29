@@ -1,14 +1,12 @@
-use axum::{
-    Form,
-    extract::State,
-    http::StatusCode,
-    response::{Html, IntoResponse},
-};
+use axum::response::Html;
 use serde::Deserialize;
-use serde_json::json;
-use tracing::{error, info, instrument};
+use tracing::instrument;
 
-use crate::db;
+mod registration;
+pub use registration::registration;
+
+mod login;
+pub use login::login;
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct AccountAuth {
@@ -21,7 +19,7 @@ pub struct AccountAuth {
 pub async fn show_login_form() -> Html<String> {
     Html(
         r#"
-    <form action="/login" method="post">
+    <form action="/api/account/login" method="post">
         <input type="text" name="email" placeholder="Username">
         <input type="password" name="password" placeholder="Password">
         <input type="submit" value="Log in">
@@ -31,23 +29,17 @@ pub async fn show_login_form() -> Html<String> {
     )
 }
 
-#[instrument(skip(pool))]
-pub async fn create_account(
-    State(pool): State<sqlx::PgPool>,
-    Form(auth): Form<AccountAuth>,
-) -> impl IntoResponse {
-    (db::account::create_account(pool, &auth.email, &auth.password).await).map_or_else(
-        |e| {
-            error!("Failed to create account: {:?}", e);
-            (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                axum::response::Json(json!({ "error": "Internal server error" })),
-            )
-                .into_response()
-        },
-        |account| {
-            info!("Created account with email: {}", auth.email);
-            (StatusCode::CREATED, account.to_json()).into_response()
-        },
+// TODO: REMOVE THIS
+#[instrument]
+pub async fn show_registration_form() -> Html<String> {
+    Html(
+        r#"
+    <form action="/api/account/registration" method="post">
+        <input type="text" name="email" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <input type="submit" value="Log in">
+    </form>
+    "#
+        .to_string(),
     )
 }
