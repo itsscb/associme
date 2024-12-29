@@ -112,3 +112,31 @@ impl From<sqlx::Error> for ApplicationError {
         Self::DatabaseError(err)
     }
 }
+
+// TODO: Make more specific
+impl From<pasetors::errors::ClaimValidationError> for ApplicationError {
+    fn from(_: pasetors::errors::ClaimValidationError) -> Self {
+        Self::InternalServerError
+    }
+}
+
+// TODO: Make more specific
+impl From<pasetors::errors::Error> for ApplicationError {
+    fn from(_: pasetors::errors::Error) -> Self {
+        Self::InternalServerError
+    }
+}
+
+// TODO: Make more specific
+impl From<chrono::ParseError> for ApplicationError {
+    fn from(_: chrono::ParseError) -> Self {
+        Self::InternalServerError
+    }
+}
+
+// TODO: Make more specific
+impl From<chrono::OutOfRangeError> for ApplicationError {
+    fn from(_: chrono::OutOfRangeError) -> Self {
+        Self::InternalServerError
+    }
+}
