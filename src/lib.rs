@@ -2,7 +2,7 @@ pub mod api;
 mod db;
 pub mod errors;
 mod models;
-use api::v1::account::{login, registration, show_login_form, show_registration_form};
+use api::v1::account::{login, registration, show_registration_form};
 use argon2::{
     Argon2, PasswordHash, PasswordVerifier,
     password_hash::{PasswordHasher, SaltString, rand_core::OsRng},

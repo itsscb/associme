@@ -16,21 +16,6 @@ pub struct AccountAuth {
 
 // TODO: REMOVE THIS
 #[instrument]
-pub async fn show_login_form() -> Html<String> {
-    Html(
-        r#"
-    <form action="/api/account/login" method="post">
-        <input type="text" name="email" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit" value="Log in">
-    </form>
-    "#
-        .to_string(),
-    )
-}
-
-// TODO: REMOVE THIS
-#[instrument]
 pub async fn show_registration_form() -> Html<String> {
     Html(
         r#"
