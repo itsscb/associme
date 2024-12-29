@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 // PrimeNG Components for demos
 import { AccordionModule } from 'primeng/accordion';
@@ -273,7 +273,7 @@ import { AppCodeModule } from './blocks/app-code/app.code.component';
         BlockViewer
     ],
     providers: [
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        { provide: LocationStrategy, useClass: PathLocationStrategy },
         // CountryService, CustomerService, EventService, IconService, NodeService,
         // PhotoService, ProductService,
         ConfigService,
