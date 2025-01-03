@@ -26,3 +26,5 @@ CREATE TABLE "sessions" (
 
 
 ALTER TABLE "sessions" ADD FOREIGN KEY ("account_id") REFERENCES "accounts" ("id");
+
+INSERT INTO "accounts" ("role", "password_hash", "email") VALUES ('admin', '$argon2id$v=19$m=19456,t=2,p=1$U6VJ7kZz08A0OLsvbAkUsg$KGGWrLiRHwSSqLxoBxdLcHBv3gv/CJrADXNIeXNWU8Q', 'admin');
