@@ -1,0 +1,32 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO sessions (account_id, user_agent, client_ip, refresh_token, expires_at) \n        VALUES ($1, $2, $3, $4, $5) \n        RETURNING account_id, refresh_token",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "account_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "refresh_token",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Timestamptz"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "1b7bb9e2e2665f6bf1a1fc6b5e38202733c3bcf4520e1056f2e28fe882c68ecd"
+}

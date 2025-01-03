@@ -11,7 +11,7 @@ pub async fn registration(
     State(config): State<Config>,
     Form(auth): Form<AccountAuth>,
 ) -> impl IntoResponse {
-    (db::account::create_account(config.pool, &auth.email, &auth.password).await).map_or_else(
+    (db::account::create_account(&config.pool, &auth.email, &auth.password).await).map_or_else(
         |e| {
             error!(email = &auth.email, error = ?e);
             (

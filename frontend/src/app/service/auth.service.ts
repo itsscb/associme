@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class AuthService {
     body.set('email', userDetails.email);
     body.set('password', userDetails.password);
 
-    return this.http.post<any>('http://127.0.0.1:8000/api/account/login', body.toString(), {
+    return this.http.post<any>(environment.apiUrl + '/api/v1/account/login', body.toString(), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
       .pipe(

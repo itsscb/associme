@@ -1,2 +1,5 @@
 [build]
 assets = ["frontend/dist/associme/*"]
+
+[deploy]
+include = ["frontend/dist/associme/*"]

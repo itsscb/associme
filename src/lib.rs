@@ -2,7 +2,7 @@ pub mod api;
 mod db;
 pub mod errors;
 mod models;
-use api::v1::account::{login, registration, show_registration_form};
+use api::v1::account::show_registration_form;
 use argon2::{
     Argon2, PasswordHash, PasswordVerifier,
     password_hash::{PasswordHasher, SaltString, rand_core::OsRng},
@@ -38,10 +38,22 @@ pub fn router(pool: sqlx::PgPool, keypair: AsymmetricKeyPair<V4>) -> axum::Route
         .nest(
             "/api",
             Router::new().nest(
-                "/account",
+                "/v1",
                 Router::new()
-                    .route("/registration", post(registration))
-                    .route("/login", post(login)),
+                    .nest(
+                        "/session",
+                        Router::new()
+                            // .route("/refresh", post(api::v1::token::refresh))
+                            // .route("/refresh", post(api::v1::token::refresh))
+                            .route("/revoke", post(api::v1::session::revoke))
+                            .route("/list", post(api::v1::session::list)),
+                    )
+                    .nest(
+                        "/account",
+                        Router::new()
+                            .route("/registration", post(api::v1::account::registration))
+                            .route("/login", post(api::v1::account::login)),
+                    ),
             ),
         )
         // .route("/login", get(show_login_form))

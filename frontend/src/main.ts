@@ -6,6 +6,8 @@ import { environment } from './environments/environment';
 
 if (environment.production) {
   enableProdMode();
+
+  environment.apiUrl = `${window.location.protocol}//${window.location.host}`;
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)

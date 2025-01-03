@@ -1,8 +1,29 @@
 use crate::{errors::ApplicationError, hash_password, models::Account, verify_password};
 
 #[tracing::instrument(skip(pool))]
+pub async fn set_password(
+    pool: &sqlx::PgPool,
+    account_id: &uuid::Uuid,
+    password: &str,
+) -> Result<(), ApplicationError> {
+    sqlx::query_as!(
+        Account,
+        "UPDATE accounts 
+        SET password_hash = $1
+        WHERE id = $2
+        RETURNING *",
+        hash_password(&password)?,
+        account_id,
+    )
+    .fetch_one(pool)
+    .await?;
+
+    Ok(())
+}
+
+#[tracing::instrument(skip(pool))]
 pub async fn create_account(
-    pool: sqlx::PgPool,
+    pool: &sqlx::PgPool,
     email: &str,
     password: &str,
 ) -> Result<Account, ApplicationError> {
@@ -24,7 +45,7 @@ pub async fn create_account(
 
 #[tracing::instrument(skip(pool))]
 pub async fn get_account_by_email(
-    pool: sqlx::PgPool,
+    pool: &sqlx::PgPool,
     email: &str,
 ) -> Result<Account, ApplicationError> {
     let account = sqlx::query_as!(
@@ -35,24 +56,24 @@ pub async fn get_account_by_email(
         LIMIT 1",
         email,
     )
-    .fetch_one(&pool)
+    .fetch_one(pool)
     .await?;
 
     Ok(account)
 }
 
 struct AccountAuth {
-    id: String,
+    id: uuid::Uuid,
     password_hash: String,
     role: String,
 }
 
 #[tracing::instrument(skip(pool))]
 pub async fn login(
-    pool: sqlx::PgPool,
+    pool: &sqlx::PgPool,
     email: &str,
     password: &str,
-) -> Result<(String, String), ApplicationError> {
+) -> Result<(uuid::Uuid, String), ApplicationError> {
     let result: AccountAuth = sqlx::query_as!(
         AccountAuth,
         "SELECT id, password_hash, role 
@@ -61,7 +82,7 @@ pub async fn login(
         LIMIT 1",
         email,
     )
-    .fetch_one(&pool)
+    .fetch_one(pool)
     .await?;
 
     if result.password_hash.is_empty() || !verify_password(password, &result.password_hash)? {

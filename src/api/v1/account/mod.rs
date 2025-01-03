@@ -10,8 +10,8 @@ pub use login::login;
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct AccountAuth {
-    email: String,
-    password: String,
+    pub email: String,
+    pub password: String,
 }
 
 // TODO: REMOVE THIS
