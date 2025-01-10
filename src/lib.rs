@@ -2,17 +2,18 @@ pub mod api;
 mod db;
 pub mod errors;
 mod models;
+use std::sync::Arc;
+
 use api::v1::account::show_registration_form;
 use argon2::{
+    password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
     Argon2, PasswordHash, PasswordVerifier,
-    password_hash::{PasswordHasher, SaltString, rand_core::OsRng},
 };
 use axum::{
-    Router,
     routing::{get, post},
+    Router,
 };
 use errors::ApplicationError;
-use pasetors::{keys::AsymmetricKeyPair, version4::V4};
 use tower_http::services::{ServeDir, ServeFile};
 
 fn hash_password(password: &str) -> Result<String, ApplicationError> {
@@ -31,8 +32,8 @@ fn verify_password(password: &str, password_hash: &str) -> Result<bool, Applicat
         .is_ok())
 }
 
-pub fn router(pool: sqlx::PgPool, keypair: AsymmetricKeyPair<V4>) -> axum::Router {
-    let config = Config::new(keypair, pool);
+pub fn router(pool: sqlx::PgPool, private_key: &[u8; 64]) -> axum::Router {
+    let config = Config::new(private_key, pool);
 
     Router::new()
         .nest(
@@ -47,6 +48,10 @@ pub fn router(pool: sqlx::PgPool, keypair: AsymmetricKeyPair<V4>) -> axum::Route
                             // .route("/refresh", post(api::v1::token::refresh))
                             .route("/revoke", post(api::v1::session::revoke))
                             .route("/list", post(api::v1::session::list)),
+                    )
+                    .nest(
+                        "/token",
+                        Router::new().route("/public_key", get(api::v1::session::public_key)),
                     )
                     .nest(
                         "/account",
@@ -68,12 +73,16 @@ pub fn router(pool: sqlx::PgPool, keypair: AsymmetricKeyPair<V4>) -> axum::Route
 
 #[derive(Clone)]
 struct Config {
-    keypair: AsymmetricKeyPair<V4>,
+    token_maker: Arc<paseto_maker::Maker<paseto_maker::version::V4, paseto_maker::purpose::Public>>,
     pool: sqlx::PgPool,
 }
 
 impl Config {
-    pub const fn new(keypair: AsymmetricKeyPair<V4>, pool: sqlx::PgPool) -> Self {
-        Self { keypair, pool }
+    pub fn new(private_key: &[u8; 64], pool: sqlx::PgPool) -> Self {
+        let token_maker = paseto_maker::Maker::new(private_key).unwrap();
+        Self {
+            token_maker: Arc::new(token_maker),
+            pool,
+        }
     }
 }

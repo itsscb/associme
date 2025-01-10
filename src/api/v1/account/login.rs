@@ -1,18 +1,16 @@
 use std::time::Duration;
 
 use axum::{
-    Form,
     extract::State,
     http::{HeaderMap, StatusCode},
     response::IntoResponse,
+    Form,
 };
+use chrono::Utc;
 use serde_json::json;
 use tracing::{error, info, instrument, warn};
 
-use crate::{
-    Config, db,
-    models::token::{Claims, Token},
-};
+use crate::{db, Config};
 
 use super::AccountAuth;
 
@@ -45,33 +43,42 @@ pub async fn login(
     };
 
     info!(email = &auth.email, ip = ip, user_agent = user_agent);
-    let mut claims = Claims::new();
-    if let Err(err) = claims.add("role", &role) {
+    let expiration = Utc::now() + Duration::from_secs(60 * 15);
+    let mut claims: paseto_maker::Claims =
+        paseto_maker::Claims::new().with_expiration(expiration.to_rfc3339());
+    if let Err(err) = claims.set_claim("role", &role) {
         error!(error = ?err, ip = ip, user_agent = user_agent);
-        return err.into_response();
+        return (StatusCode::INTERNAL_SERVER_ERROR).into_response();
     }
+    // let mut claims = ClaimsS::new();
+    // if let Err(err) = claims.add("role", &role) {
+    //     return err.into_response();
+    // }
 
-    let (token, refresh_token) = match Token::new_pair(
-        id.to_string(),
-        claims,
-        Duration::from_secs(60 * 15),
-        Duration::from_secs(60 * 60 * 24),
-        &config.keypair.secret,
-    ) {
-        Ok((token, refresh_token)) => (token, refresh_token),
-        Err(e) => {
-            error!(error = ?e, ip = ip, user_agent = user_agent);
-            return (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                axum::response::Json(json!({ "error": "Internal server error" })),
-            )
-                .into_response();
-        }
-    };
+    // let maker = paseto_maker::Maker::new(&config.keypair.secret).unwrap();
+    // let (token, refresh_token) = match TokenS::new_pair(
+    //     id.to_string(),
+    //     claims,
+    //     Duration::from_secs(60 * 15),
+    //     Duration::from_secs(60 * 60 * 24),
+    //     &config.keypair.secret,
+    // ) {
+    //     Ok((token, refresh_token)) => (token, refresh_token),
+    //     Err(e) => {
+    //         error!(error = ?e, ip = ip, user_agent = user_agent);
+    //         return (
+    //             StatusCode::INTERNAL_SERVER_ERROR,
+    //             axum::response::Json(json!({ "error": "Internal server error" })),
+    //         )
+    //             .into_response();
+    //     }
+    // };
 
+    let token = &config.token_maker.create_token(&claims).unwrap();
+    let refresh_token = &config.token_maker.create_token(&claims).unwrap();
     info!(
-        expires_at = token.expires_at().to_rfc3339(),
-        account_id = token.id(),
+        // expires_at = token.expires_at().to_rfc3339(),
+        // account_id = token.id(),
         role = role.as_str(),
         ip = ip,
         user_agent = user_agent
@@ -82,8 +89,9 @@ pub async fn login(
         &id,
         user_agent,
         ip,
-        refresh_token.token(),
-        refresh_token.expires_at(),
+        refresh_token,
+        &expiration,
+        // refresh_token.expires_at(),
     )
     .await
     {

@@ -7,7 +7,5 @@ pub use password_hash::PasswordHash;
 mod role;
 pub use role::Role;
 
-pub mod token;
-
 mod session;
 pub use session::Session;
