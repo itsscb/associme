@@ -8,16 +8,16 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
   constructor(private http: HttpClient) { 
-    const token = localStorage.getItem('JWT_Token');
+    const token = localStorage.getItem('auth_token');
     console.log('token', token, 'NOW', Date.now());
     if (token) {
       const tokenPayload = JSON.parse(token);
-      const expiresAt = tokenPayload.expires_at;
+      const expiresAt = tokenPayload.token.expires_at;
       if (new Date(expiresAt).getTime() > Date.now()) {
         this.isLoggedIn = true;
       } else {
         this.isLoggedIn = false;
-        localStorage.removeItem('JWT_Token');
+        localStorage.removeItem('auth_token');
       }
     } else {
       this.isLoggedIn = false;
@@ -36,7 +36,7 @@ export class AuthService {
     })
       .pipe(
       map(response => {
-            localStorage.setItem('JWT_Token', JSON.stringify(response));
+            localStorage.setItem('auth_token', JSON.stringify(response));
           this.isLoggedIn = true;
           return true;
         }),
@@ -49,7 +49,7 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('JWT_Token');
+    localStorage.removeItem('auth_token');
     this.isLoggedIn = false;
   }
 

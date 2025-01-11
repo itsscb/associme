@@ -3,7 +3,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 export class JwtInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const token = localStorage.getItem('JWT_Token');
+    const token = localStorage.getItem('auth_token');
     if (token) {
       const authReq = req.clone({
         setHeaders: {
