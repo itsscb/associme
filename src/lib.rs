@@ -4,7 +4,7 @@ pub mod errors;
 mod models;
 use std::sync::Arc;
 
-use api::v1::account::show_registration_form;
+use api::{middleware, v1::account::show_registration_form};
 use argon2::{
     password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
     Argon2, PasswordHash, PasswordVerifier,
@@ -41,6 +41,8 @@ pub fn router(pool: sqlx::PgPool, private_key: &[u8; 64]) -> axum::Router {
             Router::new().nest(
                 "/v1",
                 Router::new()
+                    .route("/registration", post(api::v1::account::registration))
+                    .route("/login", post(api::v1::account::login))
                     .nest(
                         "/session",
                         Router::new()
@@ -56,8 +58,11 @@ pub fn router(pool: sqlx::PgPool, private_key: &[u8; 64]) -> axum::Router {
                     .nest(
                         "/account",
                         Router::new()
-                            .route("/registration", post(api::v1::account::registration))
-                            .route("/login", post(api::v1::account::login)),
+                            .route("/", get(api::v1::account::get_account))
+                            .layer(axum::middleware::from_fn_with_state(
+                                config.clone(),
+                                middleware::authentication,
+                            )),
                     ),
             ),
         )

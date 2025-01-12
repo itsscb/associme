@@ -9,7 +9,6 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   constructor(private http: HttpClient) { 
     const token = localStorage.getItem('auth_token');
-    console.log('token', token, 'NOW', Date.now());
     if (token) {
       const tokenPayload = JSON.parse(token);
       const expiresAt = tokenPayload.token.expires_at;
@@ -17,7 +16,6 @@ export class AuthService {
         this.isLoggedIn = true;
       } else {
         this.isLoggedIn = false;
-        localStorage.removeItem('auth_token');
       }
     } else {
       this.isLoggedIn = false;
@@ -31,7 +29,7 @@ export class AuthService {
     body.set('email', userDetails.email);
     body.set('password', userDetails.password);
 
-    return this.http.post<any>(environment.apiUrl + '/api/v1/account/login', body.toString(), {
+    return this.http.post<any>(environment.apiUrl + '/api/v1/login', body.toString(), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
       .pipe(
@@ -41,7 +39,7 @@ export class AuthService {
           return true;
         }),
         catchError(error => {
-          console.log(error);
+          // TODO: Show error message to user
           this.isLoggedIn = false;
           return of(false);
         })
@@ -54,6 +52,18 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return this.isLoggedIn;
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      const tokenPayload = JSON.parse(token);
+      const expiresAt = tokenPayload.token.expires_at;
+      if (new Date(expiresAt).getTime() > Date.now()) {
+        this.isLoggedIn = true;
+        return true;
+      } else {
+        this.isLoggedIn = false;
+      }
+    }     
+    
+    return false;
   }
 }

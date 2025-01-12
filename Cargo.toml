@@ -11,6 +11,7 @@ axum = { version = "0.7.9", features = ["macros"] }
 base64 = "0.22.1"
 chrono = "0.4.39"
 ed25519-dalek = { version = "2.1.1", features = ["rand_core"] }
+futures = "0.3.31"
 paseto_maker = "0.2.1"
 pasetors = "0.7.1"
 rand = "0.8.5"
@@ -31,6 +32,7 @@ sqlx = { version = "0.8.2", features = [
 ] }
 thiserror = "2.0.9"
 tokio = "1.42.0"
+tower = "0.5.2"
 tower-http = { version = "0.6.2", features = ["fs"] }
 tracing = "0.1.41"
 uuid = { version = "1.11.0", features = ["v4"] }

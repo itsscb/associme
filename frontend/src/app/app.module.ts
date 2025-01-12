@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
@@ -144,6 +144,8 @@ import { BreadcrumbService } from './breadcrumb.service';
 import { MenuService } from './app.menu.service';
 import { AppCodeModule } from './blocks/app-code/app.code.component';
 import { AuthService } from './service/auth.service';
+import { AccountComponent } from './pages/account/account.component';
+import { JwtInterceptor } from './service/jwtinterceptor.service';
 
 @NgModule({
     imports: [
@@ -271,10 +273,12 @@ import { AuthService } from './service/auth.service';
         // DocumentationComponent,
         // IconsComponent,
         BlocksComponent,
-        BlockViewer
+        BlockViewer,
+        AccountComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         // CountryService, CustomerService, EventService, IconService, NodeService,
         // PhotoService, ProductService,
         ConfigService,

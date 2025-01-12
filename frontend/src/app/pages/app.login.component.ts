@@ -19,13 +19,9 @@ export class AppLoginComponent {
   login() {
     this.auth_service.login({ email: this.email, password: this.password }).subscribe(
       (response) => {
-        console.log('is_authenticated',this.auth_service.isAuthenticated());
         if (response) {
-          console.log('Login successful');
-          this.router.navigate(['/blocks']);
-        } else {
-          console.log('Login failed');
-        }
+          this.router.navigate(['/account']);
+        } 
       }
     );
   }

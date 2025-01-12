@@ -31,6 +31,7 @@ import { AppLoginComponent } from './pages/app.login.component';
 // import {AppTimelineDemoComponent} from './pages/app.timelinedemo.component';
 import { BlocksComponent } from './blocks/blocks/blocks.component';
 import { AuthGuardService } from './service/auth-guard.service';
+import { AccountComponent } from './pages/account/account.component';
 
 @NgModule({
     imports: [
@@ -64,6 +65,7 @@ import { AuthGuardService } from './service/auth-guard.service';
                     // {path: 'components/file', component: FileDemoComponent},
                     // {path: 'documentation', component: DocumentationComponent},
                     { path: 'blocks', component: BlocksComponent, canActivate: [AuthGuardService] },
+                    { path: 'account', component: AccountComponent, canActivate: [AuthGuardService] },
                 ]
             },
             // {path: 'error', component: AppErrorComponent},

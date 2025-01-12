@@ -47,6 +47,12 @@ pub async fn login(
     let mut claims: paseto_maker::Claims = paseto_maker::Claims::new()
         .with_expiration(expiration.to_rfc3339())
         .with_subject("token");
+
+    if let Err(err) = claims.set_claim("id", id) {
+        error!(error = ?err, ip = ip, user_agent = user_agent);
+        return (StatusCode::INTERNAL_SERVER_ERROR).into_response();
+    }
+
     if let Err(err) = claims.set_claim("role", &role) {
         error!(error = ?err, ip = ip, user_agent = user_agent);
         return (StatusCode::INTERNAL_SERVER_ERROR).into_response();

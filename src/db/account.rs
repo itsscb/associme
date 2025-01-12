@@ -62,6 +62,23 @@ pub async fn get_account_by_email(
     Ok(account)
 }
 
+#[tracing::instrument(skip(pool))]
+pub async fn get_account_by_id(pool: &sqlx::PgPool, id: &str) -> Result<Account, ApplicationError> {
+    let uuid = uuid::Uuid::parse_str(id).map_err(|_| ApplicationError::NotFound)?;
+    let account = sqlx::query_as!(
+        Account,
+        "SELECT * 
+        FROM accounts 
+        WHERE id = $1
+        LIMIT 1",
+        uuid,
+    )
+    .fetch_one(pool)
+    .await?;
+
+    Ok(account)
+}
+
 struct AccountAuth {
     id: uuid::Uuid,
     password_hash: String,
