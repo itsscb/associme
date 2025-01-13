@@ -1,0 +1,134 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO members (phone, first_name, last_name, email, birthday, postalcode, city, street, house_number, membership_state, member_id)\n                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)\n                RETURNING *",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "first_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "last_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "email",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "phone",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 5,
+        "name": "member_id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 6,
+        "name": "birthday",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 7,
+        "name": "postalcode",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 8,
+        "name": "city",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 9,
+        "name": "street",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 10,
+        "name": "house_number",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 11,
+        "name": "membership_state",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 12,
+        "name": "resignation_date",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 13,
+        "name": "resignation_reason",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 14,
+        "name": "created_by",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 15,
+        "name": "created_at",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 16,
+        "name": "changed_by",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 17,
+        "name": "changed_at",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Timestamptz",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "deee4c4be7590e4c3e34174e3e0c71de1d16b8f0524169076dcd51cd6613e4df"
+}

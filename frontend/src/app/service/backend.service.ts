@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Account } from '../model/account.model';
 import { Router } from '@angular/router';
+import { Member, NewMember } from '../model/member.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,16 @@ export class BackendService {
   
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  create_member(member: NewMember): Observable<Member> {
+    const json = JSON.stringify(member);
+    console.log("create_member",json);
+    return this.http.post<Member>(`${this.apiUrl}/member`, json, {
+      headers: { 'Content-Type': 'application/json' }
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
 
   get_account(): Observable<Account> {
     return this.http.get<Account>(`${this.apiUrl}/account`).pipe(
