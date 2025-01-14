@@ -1,6 +1,13 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { Member, Membership, NewMember } from "src/app/model/member.model";
+import {
+  Member,
+  member_to_new,
+  Membership,
+  new_member,
+  NewMember,
+  validate_member,
+} from "src/app/model/member.model";
 import { BackendService } from "src/app/service/backend.service";
 
 @Component({
@@ -12,21 +19,12 @@ export class MemberComponent {
   constructor(private backend_service: BackendService) {}
 
   is_new: boolean = true;
-
+  member: Member = new_member();
   create_member() {
-    const member: NewMember = {
-      email: "test@test.com",
-      phone: "123456789",
-      first_name: "Max",
-      last_name: "Mustermann",
-      member_id: 8,
-      birthday: new Date(),
-      postalcode: "12345",
-      city: "Musterstadt",
-      street: "Musterstraße",
-      house_number: "1",
-      membership_state: Membership.Passive,
-    };
+    if (!validate_member(this.member)) {
+      return;
+    }
+    const member: NewMember = member_to_new(this.member);
     this.backend_service.create_member(member).subscribe((member: Member) => {
       console.log("create_member response", member);
     });
