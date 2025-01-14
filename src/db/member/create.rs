@@ -29,7 +29,17 @@ pub async fn create(
                 member_id,
             )
             .fetch_one(&mut *tx)
-            .await?
+            .await.map_err(|err| {
+                match &err {
+                    sqlx::Error::Database(db_err) => {
+                        if db_err.code() == Some(std::borrow::Cow::Borrowed("23505")) { // 23505 is the SQLSTATE code for unique violation
+                            ApplicationError::Duplicate
+                        } else {
+                            ApplicationError::from(err)
+                        }
+                    }
+                    _ => ApplicationError::from(err),
+                }})?
         }
         None => {
             sqlx::query_as!(
@@ -49,7 +59,17 @@ pub async fn create(
                 member.membership_state.to_string(),
             )
             .fetch_one(&mut *tx)
-            .await?
+            .await.map_err(|err| {
+                match &err {
+                    sqlx::Error::Database(db_err) => {
+                        if db_err.code() == Some(std::borrow::Cow::Borrowed("23505")) { // 23505 is the SQLSTATE code for unique violation
+                            ApplicationError::Duplicate
+                        } else {
+                            ApplicationError::from(err)
+                        }
+                    }
+                    _ => ApplicationError::from(err),
+                }})?
         }
     };
 

@@ -4,6 +4,8 @@ use thiserror::Error;
 pub enum ApplicationError {
     #[error("Database error: {0}")]
     DatabaseError(#[from] sqlx::Error),
+    #[error("Duplicate")]
+    Duplicate,
     #[error("Missing Data: {0}")]
     MissingData(String),
     #[error("Record not found")]
@@ -33,6 +35,7 @@ pub enum ApplicationError {
 impl IntoResponse for ApplicationError {
     fn into_response(self) -> axum::http::Response<axum::body::Body> {
         let body = match &self {
+            Self::Duplicate => "Duplicate".to_string(),
             Self::MissingData(err) => format!("Missing data: {err}"),
             Self::DatabaseError(err) => format!("Database error: {err}"),
             Self::NotFound => "Record not found".to_string(),
@@ -46,6 +49,7 @@ impl IntoResponse for ApplicationError {
         axum::http::Response::builder()
             .status(match &self {
                 Self::NotFound => StatusCode::NOT_FOUND,
+                Self::Duplicate => StatusCode::CONFLICT,
                 Self::PasswordError(_) | Self::InvalidEmail | Self::InvalidPassword => {
                     StatusCode::BAD_REQUEST
                 }

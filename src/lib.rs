@@ -74,11 +74,11 @@ pub fn router(pool: sqlx::PgPool, private_key: &[u8; 64]) -> axum::Router {
                             .route("/:id", delete(api::v1::member::delete_member))
                             .layer(axum::middleware::from_fn_with_state(
                                 config.clone(),
-                                middleware::authentication,
+                                middleware::admin,
                             ))
                             .layer(axum::middleware::from_fn_with_state(
                                 config.clone(),
-                                middleware::admin,
+                                middleware::authentication,
                             )),
                     ),
             ),
