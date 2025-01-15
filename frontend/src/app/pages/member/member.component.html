@@ -1,2 +1,153 @@
-<p>member works!</p>
-<button (click)="create_member()">Create Member</button>
+<div class="grid p-fluid">
+    <div class="col-12 md:col-6">
+        <div class="col-12">
+            <div class="card p-fluid">
+                <h5>Member</h5>
+                <div class="grid p-fluid">
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <label htmlFor="membership">Membership</label>
+                            <p-dropdown
+                                id="membership"
+                                [options]="membership_options"
+                                [(ngModel)]="member.membership_state"
+                            ></p-dropdown>
+                        </div>
+                        <div class="field col">
+                            <label htmlFor="member_id">Member ID</label>
+                            <input
+                                pInputText
+                                id="member_id"
+                                type="text"
+                                [(ngModel)]="member.member_id"
+                            />
+                        </div>
+                    </div>
+                    <!-- <div class="grid p-fluid"> -->
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <!-- <div class="grid col-12 mb-2 lg:col-4 lg:mb-0"> -->
+                            <label htmlFor="mail">E-Mail</label>
+
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-envelope"></i>
+                                <input
+                                    type="text"
+                                    pInputText
+                                    id="mail"
+                                    [(ngModel)]="member.email"
+                                />
+                            </span>
+                        </div>
+                        <div class="field col">
+                            <label htmlFor="phone">Phone</label>
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-phone"></i>
+                                <input
+                                    type="text"
+                                    pInputText
+                                    id="phone"
+                                    [(ngModel)]="member.phone"
+                                />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <label htmlFor="last_name">Last Name</label>
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-user"></i>
+                                <input
+                                    pInputText
+                                    id="last_name"
+                                    type="text"
+                                    [(ngModel)]="member.last_name"
+                                />
+                            </span>
+                        </div>
+                        <div class="field col">
+                            <label for="first_name">First Name</label>
+                            <input
+                                pInputText
+                                id="first_name"
+                                type="text"
+                                [(ngModel)]="member.first_name"
+                            />
+                        </div>
+                    </div>
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <label htmlFor="birthday">Birthday</label>
+
+                            <p-calendar
+                                dateFormat="dd.mm.yy"
+                                id="birthday"
+                                [showIcon]="true"
+                                inputId="icon"
+                                [readonlyInput]="false"
+                                [(ngModel)]="member.birthday"
+                                [maxDate]="max_year"
+                            ></p-calendar>
+                        </div>
+                    </div>
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <label htmlFor="street">Street</label>
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-map-marker"></i>
+
+                                <input
+                                    pInputText
+                                    id="street"
+                                    type="text"
+                                    [(ngModel)]="member.street"
+                                />
+                            </span>
+                        </div>
+                        <div class="field col-2">
+                            <label htmlFor="house_number">Nr.</label>
+                            <input
+                                pInputText
+                                id="house_number"
+                                type="text"
+                                [(ngModel)]="member.house_number"
+                            />
+                        </div>
+                    </div>
+                    <div class="p-formgrid grid">
+                        <div class="field col-4">
+                            <label htmlFor="postalcode">Postalcode</label>
+                            <input
+                                pInputText
+                                id="postalcode"
+                                type="text"
+                                [(ngModel)]="member.postalcode"
+                            />
+                        </div>
+                        <div class="field col">
+                            <label htmlFor="city">City</label>
+                            <input
+                                pInputText
+                                id="city"
+                                type="text"
+                                [(ngModel)]="member.city"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <button
+                    (click)="create_member()"
+                    pButton
+                    pRipple
+                    label="Create Member"
+                    icon="pi pi-plus-circle"
+                    class="mr-2 mb-2"
+                ></button>
+
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- <button (click)="create_member()">Create Member</button> -->
+</div>

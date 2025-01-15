@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
+
 import {
   Member,
   member_to_new,
@@ -9,18 +10,87 @@ import {
   validate_member,
 } from "src/app/model/member.model";
 import { BackendService } from "src/app/service/backend.service";
-
+import { SelectItem } from "primeng/api";
+import { BreadcrumbService } from "src/app/breadcrumb.service";
+import { CheckboxModule } from "primeng/checkbox";
 @Component({
   selector: "app-member",
   templateUrl: "./member.component.html",
-  styleUrls: ["./member.component.scss"],
+  // styleUrls: ["./member.component.scss"],
 })
-export class MemberComponent {
-  constructor(private backend_service: BackendService) {}
+export class MemberComponent implements OnInit {
+  constructor(
+    private backend_service: BackendService,
+    private breadcrumbService: BreadcrumbService,
+  ) {
+    this.breadcrumbService.setItems([
+      { label: "Member", routerLink: ["/member"] },
+      { label: "New", routerLink: ["/member"] },
+    ]);
+  }
+
+  ngOnInit() {
+    this.max_year = new Date();
+    this.max_year.setFullYear(this.max_year.getFullYear() - 18);
+  }
+
+  max_year: Date;
+
+  countries: any[];
+
+  filteredCountries: any[];
+
+  selectedCountryAdvanced: any[];
+
+  valSlider = 50;
+
+  valColor = "#424242";
+
+  valRadio: string;
+
+  valCheck: string[] = [];
+
+  valCheck2: boolean;
+
+  valSwitch: boolean;
+
+  cities: SelectItem[];
+
+  selectedList: SelectItem;
+
+  selectedDrop: SelectItem;
+
+  selectedMulti: string[] = [];
+
+  valToggle = false;
+
+  paymentOptions: any[];
+
+  valSelect1: string;
+
+  valSelect2: string;
+
+  valueKnob = 20;
+
+  membership_options = [
+    Membership.None,
+    Membership.Active,
+    Membership.Passive,
+    Membership.Pending,
+    Membership.Resigned,
+  ];
 
   is_new: boolean = true;
   member: Member = new_member();
+
+  max_date(): Date {
+    const today = new Date();
+    today.setFullYear(today.getFullYear() - 18);
+    return today;
+  }
+
   create_member() {
+    console.log(this.member);
     if (!validate_member(this.member)) {
       return;
     }

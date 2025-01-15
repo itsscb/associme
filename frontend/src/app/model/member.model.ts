@@ -1,11 +1,13 @@
 export function new_member(): Member {
+  const today = new Date();
+  today.setFullYear(today.getFullYear() - 18);
   const member: Member = {
     id: "",
     email: "",
     phone: "",
     first_name: "",
     last_name: "",
-    birthday: new Date(),
+    birthday: today,
     postalcode: "",
     city: "",
     street: "",
