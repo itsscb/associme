@@ -15,7 +15,7 @@ The userlogin is `admin` with the same as password.
 
 # Features
 
-- [-] Member management
+- [ ] Member management (*in progress*)
 - [ ] Event organization
 - [ ] Financial tracking
 - [ ] Communication tools
