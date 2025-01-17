@@ -31,7 +31,7 @@ pub async fn create_member(
             (StatusCode::OK, Json(member.to_json())).into_response()
         }
         Err(e) => {
-            if let ApplicationError::Duplicate = e {
+            if matches!(e, ApplicationError::Duplicate) {
                 tracing::warn!("duplicate member");
                 return (
                     StatusCode::CONFLICT,
