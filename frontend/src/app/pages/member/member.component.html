@@ -27,17 +27,15 @@
                             />
                         </div>
                     </div>
-                    <!-- <div class="grid p-fluid"> -->
                     <div class="p-formgrid grid">
                         <div class="field col">
-                            <!-- <div class="grid col-12 mb-2 lg:col-4 lg:mb-0"> -->
                             <label htmlFor="mail">E-Mail</label>
 
                             <span class="p-input-icon-left">
                                 <i class="pi pi-envelope"></i>
                                 <input
                                 [disabled]="!is_edit"
-                                    type="text"
+                                    type="email"
                                     pInputText
                                     id="mail"
                                     [(ngModel)]="member.email"
@@ -50,7 +48,7 @@
                                 <i class="pi pi-phone"></i>
                                 <input
                                 [disabled]="!is_edit"
-                                    type="text"
+                                    type="tel"
                                     pInputText
                                     id="phone"
                                     [(ngModel)]="member.phone"
@@ -121,6 +119,8 @@
                                 pInputText
                                 id="house_number"
                                 type="text"
+                                inputmode="numeric"
+                                pattern
                                 [(ngModel)]="member.house_number"
                             />
                         </div>
@@ -133,6 +133,7 @@
                                 pInputText
                                 id="postalcode"
                                 type="text"
+                                inputmode="numeric"
                                 [(ngModel)]="member.postalcode"
                             />
                         </div>
