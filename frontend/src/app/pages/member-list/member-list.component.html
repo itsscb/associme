@@ -1,0 +1,52 @@
+<p-table #table [value]="members" dataKey="id" sortField="last_name" sortMode="multiple" [globalFilterFields]="['member_id', 'first_name', 'last_name','membership_state']" styleClass="custom-table">
+    <ng-template pTemplate="caption">
+        <div class="flex justify-content-between flex-column sm:flex-row">
+            <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear_filter(table)"></button>
+            <span class="p-input-icon-left mb-2">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" #filter (input)="table.filterGlobal($event.target.value, 'contains')" placeholder="Search Keyword" class="w-full"/>
+            </span>
+        </div>
+    </ng-template>
+  <ng-template pTemplate="header" class="table-header">
+    <tr>
+        <th pSortableColumn="last_name">
+            Last Name 
+            <div class="row-header-icons">
+                <p-sortIcon field="last_name"></p-sortIcon>
+                <p-columnFilter type="text" field="last_name" display="menu" placeholder="Search by Last Name"></p-columnFilter>
+            </div>
+        </th>
+        <th pSortableColumn="first_name">
+            First Name
+            <div class="row-header-icons">
+                <p-sortIcon field="first_name"></p-sortIcon>
+                <p-columnFilter type="text" field="first_name" display="menu" placeholder="Search by First Name"></p-columnFilter>
+            </div>
+        </th>
+        <th pSortableColumn="membership_state">
+            Membership
+            <div class="row-header-icons">
+                <p-sortIcon field="membership_state"></p-sortIcon>
+                <p-columnFilter type="text" field="membership_state" display="menu" placeholder="Search by Membership"></p-columnFilter>
+            </div>  
+        </th>
+        <th pSortableColumn="member_id">
+            Member ID
+            <div class="row-header-icons" style="float: right;">
+            <p-sortIcon field="member_id"></p-sortIcon>
+            <p-columnFilter type="text" field="member_id" display="menu" placeholder="Search by Member ID"></p-columnFilter>
+            </div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-member class="table-body">
+      <tr [routerLink]="['/member', member.id]">
+          <td>{{member.last_name}}</td>
+          <td>{{member.first_name}}</td>
+          <td>{{member.membership_state}}</td>
+          <td>{{member.member_id}}</td>
+      </tr>
+    </ng-template>
+    
+</p-table>

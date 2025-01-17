@@ -33,6 +33,7 @@ import { BlocksComponent } from "./blocks/blocks/blocks.component";
 import { AuthGuardService } from "./service/auth-guard.service";
 import { AccountComponent } from "./pages/account/account.component";
 import { MemberComponent } from "./pages/member/member.component";
+import { MemberListComponent } from "./pages/member-list/member-list.component";
 
 @NgModule({
   imports: [
@@ -45,7 +46,7 @@ import { MemberComponent } from "./pages/member/member.component";
             // TODO: Remove in Production
             {
               path: "",
-              component: MemberComponent,
+              component: MemberListComponent,
               canActivate: [AuthGuardService],
             },
             // {path: '', component: DashboardDemoComponent},
@@ -85,6 +86,12 @@ import { MemberComponent } from "./pages/member/member.component";
             },
             {
               path: "member",
+              component: MemberListComponent,
+              canActivate: [AuthGuardService],
+            },
+            // TODO: Implement this
+            {
+              path: "member/:id",
               component: MemberComponent,
               canActivate: [AuthGuardService],
             },

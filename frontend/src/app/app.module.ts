@@ -147,6 +147,7 @@ import { AuthService } from "./service/auth.service";
 import { AccountComponent } from "./pages/account/account.component";
 import { JwtInterceptor } from "./service/jwtinterceptor.service";
 import { MemberComponent } from "./pages/member/member.component";
+import { MemberListComponent } from './pages/member-list/member-list.component';
 
 @NgModule({
   imports: [
@@ -277,6 +278,7 @@ import { MemberComponent } from "./pages/member/member.component";
     BlockViewer,
     AccountComponent,
     MemberComponent,
+    MemberListComponent,
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },

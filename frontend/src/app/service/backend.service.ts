@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
 import { Account } from "../model/account.model";
 import { Router } from "@angular/router";
 import { Member, NewMember } from "../model/member.model";
@@ -25,6 +25,15 @@ export class BackendService {
         headers: { "Content-Type": "application/json" },
       })
       .pipe(catchError(this.handleError));
+  }
+
+  list_members(): Observable<Member[]> {
+    return this.http
+      .get<{members: Member[]}>(`${this.apiUrl}/member`)
+      .pipe(
+        map(response => response.members),
+        catchError(this.handleError)
+      );
   }
 
   get_account(): Observable<Account> {

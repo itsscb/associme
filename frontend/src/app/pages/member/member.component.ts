@@ -12,7 +12,8 @@ import {
 import { BackendService } from "src/app/service/backend.service";
 import { SelectItem } from "primeng/api";
 import { BreadcrumbService } from "src/app/breadcrumb.service";
-import { CheckboxModule } from "primeng/checkbox";
+import { ActivatedRoute } from "@angular/router";
+
 @Component({
   selector: "app-member",
   templateUrl: "./member.component.html",
@@ -22,17 +23,29 @@ export class MemberComponent implements OnInit {
   constructor(
     private backend_service: BackendService,
     private breadcrumbService: BreadcrumbService,
+    private route: ActivatedRoute,
   ) {
     this.breadcrumbService.setItems([
       { label: "Member", routerLink: ["/member"] },
-      { label: "New", routerLink: ["/member"] },
+      { label: "ID", },
     ]);
   }
 
   ngOnInit() {
+    this.user_id = this.route.snapshot.paramMap.get("id");
+    if (this.user_id) {
+      this.breadcrumbService.setItems([
+        { label: "Member", routerLink: ["/member"] },
+        { label: this.user_id, },
+      ]);
+
+      
+    }
     this.max_year = new Date();
     this.max_year.setFullYear(this.max_year.getFullYear() - 18);
   }
+
+  user_id: string;
 
   max_year: Date;
 
@@ -90,13 +103,14 @@ export class MemberComponent implements OnInit {
   }
 
   create_member() {
-    console.log(this.member);
+    console.log(JSON.stringify(this.member));
     if (!validate_member(this.member)) {
       return;
     }
-    const member: NewMember = member_to_new(this.member);
-    this.backend_service.create_member(member).subscribe((member: Member) => {
-      console.log("create_member response", member);
-    });
+    navigator.clipboard.writeText(JSON.stringify(this.member));
+    // const member: NewMember = member_to_new(this.member);
+    // this.backend_service.create_member(member).subscribe((member: Member) => {
+    //   console.log("create_member response", member);
+    // });
   }
 }
