@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 import { Account } from "../model/account.model";
 import { Router } from "@angular/router";
-import { Member, NewMember } from "../model/member.model";
+import { Member, Membership, NewMember } from "../model/member.model";
 
 @Injectable({
   providedIn: "root",
@@ -31,8 +31,33 @@ export class BackendService {
     return this.http
       .get<{members: Member[]}>(`${this.apiUrl}/member`)
       .pipe(
-        map(response => response.members),
+        map(response => response.members.map(member => ({
+          ...member,
+          birthday: new Date(member.birthday),
+          created_at: new Date(member.created_at),
+          changed_at: new Date(member.changed_at),
+          membership_state: member.membership_state as Membership,
+        }))),
         catchError(this.handleError)
+      );
+  }
+
+  get_member(id: string): Observable<Member> {
+    return this.http
+      .get<{member: Member}>(`${this.apiUrl}/member/${id.trim()}`)
+      .pipe(
+      map(response => {
+        const member = response.member;
+        const transformedMember = {
+        ...member,
+        birthday: new Date(member.birthday),
+        created_at: new Date(member.created_at),
+        changed_at: new Date(member.changed_at),
+        membership_state: member.membership_state as Membership,
+        };
+        return transformedMember;
+      }),
+      catchError(this.handleError)
       );
   }
 

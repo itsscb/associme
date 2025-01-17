@@ -1,4 +1,7 @@
-use std::{fs::File, io::Read};
+use std::{
+    fs::File,
+    io::{Read, Write},
+};
 
 use tracing::{info, warn};
 
@@ -6,7 +9,15 @@ use tracing::{info, warn};
 async fn main(#[shuttle_shared_db::Postgres] pool: sqlx::PgPool) -> shuttle_axum::ShuttleAxum {
     let private_key = read_private_key().unwrap_or_else(|_| {
         warn!("Could not read Paseto PrivateKey, generating a temporary private key");
-        paseto_maker::Maker::new_keypair().0
+        let pk = paseto_maker::Maker::new_keypair().0;
+        #[cfg(debug_assertions)]
+        {
+            let mut file =
+                File::create("paseto_private").expect("Failed to create private key file");
+            file.write_all(&pk)
+                .expect("Failed to write private key to file");
+        }
+        pk
     });
 
     info!("Running Database migrations");

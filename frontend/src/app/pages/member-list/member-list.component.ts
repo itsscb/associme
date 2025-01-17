@@ -15,13 +15,7 @@ export class MemberListComponent implements OnInit{
 
   ngOnInit() {
     this.backend_service.list_members().subscribe((members) => {
-      this.members = members.map(member => ({
-        ...member,
-        birthday: new Date(member.birthday),
-        created_at: new Date(member.created_at),
-        changed_at: new Date(member.changed_at),
-        membership_state: member.membership_state as Membership,
-      }));
+      this.members = members;
     });
   }
   

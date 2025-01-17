@@ -27,18 +27,30 @@ export class MemberComponent implements OnInit {
   ) {
     this.breadcrumbService.setItems([
       { label: "Member", routerLink: ["/member"] },
-      { label: "ID", },
+      { label: "New", },
     ]);
   }
 
   ngOnInit() {
     this.user_id = this.route.snapshot.paramMap.get("id");
-    if (this.user_id) {
+    if (this.user_id === 'new') {
       this.breadcrumbService.setItems([
         { label: "Member", routerLink: ["/member"] },
-        { label: this.user_id, },
+        { label: "New", },
       ]);
-
+      this.is_new = true;
+      this.is_edit = true;
+    }
+    else if(this.user_id) {
+      this.backend_service.get_member(this.user_id).subscribe((member) => {
+        console.table(member);
+        this.member = member;
+        this.breadcrumbService.setItems([
+          { label: "Member", routerLink: ["/member"] },
+          { label: `${member.last_name}, ${member.first_name}${member.member_id ? ` [${member.member_id}]` : ''}`, },
+        ]);
+        this.is_new = false;
+      });
       
     }
     this.max_year = new Date();
@@ -49,41 +61,6 @@ export class MemberComponent implements OnInit {
 
   max_year: Date;
 
-  countries: any[];
-
-  filteredCountries: any[];
-
-  selectedCountryAdvanced: any[];
-
-  valSlider = 50;
-
-  valColor = "#424242";
-
-  valRadio: string;
-
-  valCheck: string[] = [];
-
-  valCheck2: boolean;
-
-  valSwitch: boolean;
-
-  cities: SelectItem[];
-
-  selectedList: SelectItem;
-
-  selectedDrop: SelectItem;
-
-  selectedMulti: string[] = [];
-
-  valToggle = false;
-
-  paymentOptions: any[];
-
-  valSelect1: string;
-
-  valSelect2: string;
-
-  valueKnob = 20;
 
   membership_options = [
     Membership.None,
@@ -94,6 +71,7 @@ export class MemberComponent implements OnInit {
   ];
 
   is_new: boolean = true;
+  is_edit: boolean = false;
   member: Member = new_member();
 
   max_date(): Date {
@@ -102,15 +80,14 @@ export class MemberComponent implements OnInit {
     return today;
   }
 
-  create_member() {
-    console.log(JSON.stringify(this.member));
+  submit_member() {
     if (!validate_member(this.member)) {
       return;
     }
-    navigator.clipboard.writeText(JSON.stringify(this.member));
-    // const member: NewMember = member_to_new(this.member);
-    // this.backend_service.create_member(member).subscribe((member: Member) => {
-    //   console.log("create_member response", member);
-    // });
+
+    const member: NewMember = member_to_new(this.member);
+    this.backend_service.create_member(member).subscribe((member: Member) => {
+      console.log("create_member response", member);
+    });
   }
 }

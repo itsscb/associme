@@ -27,3 +27,4 @@ Cargo.lock
 #.idea//target
 .shuttle*
 Secrets*.toml
+paseto_private
