@@ -22,10 +22,10 @@ import { ActivatedRoute } from "@angular/router";
 export class MemberComponent implements OnInit {
   constructor(
     private backend_service: BackendService,
-    private breadcrumbService: BreadcrumbService,
+    private breadcrumb_service: BreadcrumbService,
     private route: ActivatedRoute,
   ) {
-    this.breadcrumbService.setItems([
+    this.breadcrumb_service.setItems([
       { label: "Member", routerLink: ["/member"] },
       { label: "New", },
     ]);
@@ -34,7 +34,7 @@ export class MemberComponent implements OnInit {
   ngOnInit() {
     this.user_id = this.route.snapshot.paramMap.get("id");
     if (this.user_id === 'new') {
-      this.breadcrumbService.setItems([
+      this.breadcrumb_service.setItems([
         { label: "Member", routerLink: ["/member"] },
         { label: "New", },
       ]);
@@ -45,7 +45,7 @@ export class MemberComponent implements OnInit {
       this.backend_service.get_member(this.user_id).subscribe((member) => {
         console.table(member);
         this.member = member;
-        this.breadcrumbService.setItems([
+        this.breadcrumb_service.setItems([
           { label: "Member", routerLink: ["/member"] },
           { label: `${member.last_name}, ${member.first_name}${member.member_id ? ` [${member.member_id}]` : ''}`, },
         ]);
