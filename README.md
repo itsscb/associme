@@ -4,6 +4,15 @@
 
 `associme` is an ambitious project aimed at providing a batteries-included webservice for associations, such as soccer clubs, to manage their members, events, and more. Currently, this is a proof-of-concept and is far from being usable. Built with `Rust` and `Angular`, it aims to provide a comprehensive solution for association management.
 
+# Demo
+
+Currently the latest release is hosted at [associme-xlnd.shuttle.app/](https://associme-xlnd.shuttle.app/).
+
+The userlogin is `admin` with the same as password.
+
+**Please refrain from exploiting the login credentials provided for the demo.
+<br>This is a temporary setup intended for demonstration purposes only.**
+
 # Features
 
 - [-] Member management
@@ -14,18 +23,25 @@
 
 # Prerequisites
 
+## Nix users (flakes)
+
+Run `nix develop` inside the cloned repository.
+
+## All others
+
 Before you begin, ensure you have the following installed:
 
-- Rust (latest stable version)
-- Node.js (v22.11 or later)
-- npm (v10.9 or later)
-- Angular CLI (v16.1.8 or later)
+- Rust (_latest stable version_)
+- Node.js (_v22.11 or later_)
+- npm (_v10.9 or later_)
+- Angular CLI (_v16.1.8 or later_)
+- Docker (_for local development_)
 - Shuttle CLI
 
 To install the Shuttle CLI, run:
 
 ```bash
-curl -sSf https://www.shuttle.rs/install.sh | bash
+cargo install shuttle
 ```
 
 # Usage
@@ -33,14 +49,12 @@ curl -sSf https://www.shuttle.rs/install.sh | bash
 ## Clone the repository:
 
 ```bash
-git clone https://github.com/itsscb/associme.git
-cd associme
+git clone https://github.com/itsscb/associme.git && cd associme
 ```
 
 ## Run locally:
 
 ```bash
-cd backend
 shuttle run
 ```
 
@@ -53,7 +67,6 @@ Open your browser and navigate to http://localhost:8000 to access the `associme`
 The backend is built with Rust and uses the Shuttle.rs framework. To start the development server:
 
 ```bash
-cd backend
 shuttle run
 ```
 
@@ -85,6 +98,9 @@ shuttle project link
 ### Deploy your application:
 
 ```bash
+cd frontend/
+npm run br
+cd ..
 shuttle deploy
 ```
 
@@ -94,4 +110,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 # License
 
-This project is licensed under the MIT License.
+This project is licensed under the GNU General Public License v3.0 License.
