@@ -1,13 +1,13 @@
-import { Component, inject } from '@angular/core';
-import { AuthService } from '../service/auth.service';
-import { Router } from '@angular/router';
+import { Component, inject } from "@angular/core";
+import { AuthService } from "../service/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './app.login.component.html',
+  selector: "app-login",
+  templateUrl: "./app.login.component.html",
 })
 export class AppLoginComponent {
-  constructor(private auth_service: AuthService) { }
+  constructor(private auth_service: AuthService) {}
   router = inject(Router);
 
   dark: boolean;
@@ -17,12 +17,12 @@ export class AppLoginComponent {
   password: string;
 
   login() {
-    this.auth_service.login({ email: this.email, password: this.password }).subscribe(
-      (response) => {
+    this.auth_service
+      .login({ email: this.email, password: this.password })
+      .subscribe((response) => {
         if (response) {
-          this.router.navigate(['/account']);
-        } 
-      }
-    );
+          this.router.navigate(["/member"]);
+        }
+      });
   }
 }

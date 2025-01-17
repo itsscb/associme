@@ -44,8 +44,8 @@ impl NewMember {
         membership_state: crate::models::member::Membership,
     ) -> Self {
         Self {
-            phone,
             email,
+            phone,
             first_name,
             last_name,
             member_id,

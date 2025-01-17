@@ -1,0 +1,23 @@
+.table-header>tr>th {
+    display: flex;
+    justify-content: space-between;
+    // justify-items: center;
+    text-align:center;
+}
+
+.row-header-icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    float: right;
+    column-gap: 0.5rem;
+    justify-items: center;
+    // width: 100px;
+}
+
+::ng-deep .custom-table tbody tr:hover {
+    cursor: pointer;
+    background-color: var(--highlight-bg);
+}
+
+
