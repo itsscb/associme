@@ -3,6 +3,7 @@ import { Member, Membership } from 'src/app/model/member.model';
 import { BackendService } from 'src/app/service/backend.service';
 
 import { Table } from 'primeng/table';
+import { BreadcrumbService } from 'src/app/breadcrumb.service';
 
 
 @Component({
@@ -11,11 +12,15 @@ import { Table } from 'primeng/table';
   styleUrls: ['./member-list.component.scss']
 })
 export class MemberListComponent implements OnInit{
-  constructor(private backend_service: BackendService) {}
+  constructor(private backend_service: BackendService, private breadcrumb_service: BreadcrumbService) {}
 
   ngOnInit() {
     this.backend_service.list_members().subscribe((members) => {
       this.members = members;
+      this.breadcrumb_service.setItems([
+        { label: "Member", routerLink: ["/member"] },
+        { label: "List", },
+      ]);
     });
   }
   
