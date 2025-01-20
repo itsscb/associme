@@ -62,6 +62,12 @@ export class BackendService {
       );
   }
 
+  delete_member(id: string): Observable<void> {
+    return this.http
+      .delete<void>(`${this.apiUrl}/member/${id.trim()}`)
+      .pipe(catchError(this.handleError));
+  }
+
   get_member(id: string): Observable<Member> {
     return this.http
       .get<{member: Member}>(`${this.apiUrl}/member/${id.trim()}`)

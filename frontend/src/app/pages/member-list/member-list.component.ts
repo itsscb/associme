@@ -23,6 +23,12 @@ export class MemberListComponent implements OnInit{
       ]);
     });
   }
+
+  delete_member(id: string) {
+    this.backend_service.delete_member(id).subscribe(() => {
+      this.members = this.members.filter((member) => member.id !== id);
+    });
+  }
   
       @ViewChild('table') table: Table;
   

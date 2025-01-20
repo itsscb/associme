@@ -41,6 +41,7 @@
             <p-columnFilter type="text" field="member_id" display="menu" placeholder="Search by Member ID"></p-columnFilter>
             </div>
         </th>
+        <th></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-member class="table-body">
@@ -49,6 +50,8 @@
           <td>{{member.first_name}}</td>
           <td>{{member.membership_state}}</td>
           <td>{{member.member_id}}</td>
+          <td>			<p-button icon="pi pi-trash" styleClass="p-button-danger mb-2" (click)="delete_member(member.id)"></p-button>
+          </td>
       </tr>
     </ng-template>
     
