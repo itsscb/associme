@@ -35,7 +35,7 @@ impl Member {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Type)]
-#[sqlx(type_name = "membership", rename_all = "lowercase")]
+#[sqlx(type_name = "VARCHAR", rename_all = "lowercase")]
 #[serde(rename_all = "lowercase")]
 pub enum Membership {
     Active,

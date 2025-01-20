@@ -45,7 +45,7 @@ export class MemberListComponent implements OnInit{
       created_by:"",
       changed_at: new Date("2025-01-17T17:13:17.143Z"),
       changed_by:"",
-      member_id:"99"
+      member_id:99
     },
     {
       id:"b2",
@@ -63,7 +63,7 @@ export class MemberListComponent implements OnInit{
       created_by:"system",
       changed_at: new Date("2025-01-17T17:13:17.143Z"),
       changed_by:"system",
-      member_id:"2"
+      member_id:2
     },
     {
       id:"b2",
@@ -81,7 +81,7 @@ export class MemberListComponent implements OnInit{
       created_by:"system",
       changed_at: new Date("2025-01-17T17:13:17.143Z"),
       changed_by:"system",
-      member_id:"3"
+      member_id:3
     },
   ];
 

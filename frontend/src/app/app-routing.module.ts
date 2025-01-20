@@ -34,6 +34,7 @@ import { AuthGuardService } from "./service/auth-guard.service";
 import { AccountComponent } from "./pages/account/account.component";
 import { MemberComponent } from "./pages/member/member.component";
 import { MemberListComponent } from "./pages/member-list/member-list.component";
+import { environment } from "src/environments/environment";
 
 @NgModule({
   imports: [
@@ -47,7 +48,7 @@ import { MemberListComponent } from "./pages/member-list/member-list.component";
             {
               path: "",
               component: MemberListComponent,
-              canActivate: [AuthGuardService],
+              canActivate: environment.production ? [AuthGuardService] : undefined,
             },
             // {path: '', component: DashboardDemoComponent},
             // {path: 'uikit/formlayout', component: FormLayoutDemoComponent},
@@ -77,23 +78,23 @@ import { MemberListComponent } from "./pages/member-list/member-list.component";
             {
               path: "blocks",
               component: BlocksComponent,
-              canActivate: [AuthGuardService],
+              canActivate: environment.production ? [AuthGuardService] : undefined,
             },
             {
               path: "account",
               component: AccountComponent,
-              canActivate: [AuthGuardService],
+              canActivate: environment.production ? [AuthGuardService] : undefined,
             },
             {
               path: "member",
               component: MemberListComponent,
-              canActivate: [AuthGuardService],
+              canActivate: environment.production ? [AuthGuardService] : undefined,
             },
             // TODO: Implement this
             {
               path: "member/:id",
               component: MemberComponent,
-              canActivate: [AuthGuardService],
+              canActivate: environment.production ? [AuthGuardService] : undefined,
             },
           ],
         },

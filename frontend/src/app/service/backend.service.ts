@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 import { Account } from "../model/account.model";
 import { Router } from "@angular/router";
-import { Member, Membership, NewMember } from "../model/member.model";
+import { Member, Membership, NewMember, UpdateMember } from "../model/member.model";
 
 @Injectable({
   providedIn: "root",
@@ -19,12 +19,32 @@ export class BackendService {
 
   create_member(member: NewMember): Observable<Member> {
     const json = JSON.stringify(member);
-    console.log("create_member", json);
+    // console.log("create_member", json);
     return this.http
       .post<Member>(`${this.apiUrl}/member`, json, {
         headers: { "Content-Type": "application/json" },
       })
       .pipe(catchError(this.handleError));
+  }
+
+  update_member(id: string, member: UpdateMember): Observable<Member> {
+    const json = JSON.stringify(member);
+    return this.http
+      .patch<{member: Member}>(`${this.apiUrl}/member/${id.trim()}`, json, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .pipe(map(response => {
+        
+        const member = response.member as Member;
+        const transformedMember: Member = {
+        ...member,
+        birthday: new Date(member.birthday),
+        created_at: new Date(member.created_at),
+        changed_at: new Date(member.changed_at),
+        membership_state: member.membership_state as Membership,
+        };
+        return transformedMember;
+      }), catchError(this.handleError));
   }
 
   list_members(): Observable<Member[]> {

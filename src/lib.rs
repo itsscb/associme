@@ -69,9 +69,9 @@ pub fn router(pool: sqlx::PgPool, private_key: &[u8; 64]) -> axum::Router {
                         Router::new()
                             .route("/", get(api::v1::member::list_members))
                             .route("/", post(api::v1::member::create_member))
-                            .route("/:id", get(api::v1::member::get_member))
-                            .route("/", patch(api::v1::member::update_member))
-                            .route("/:id", delete(api::v1::member::delete_member))
+                            .route("/:member_id", get(api::v1::member::get_member))
+                            .route("/:member_id", patch(api::v1::member::update_member))
+                            .route("/:member_id", delete(api::v1::member::delete_member))
                             .layer(axum::middleware::from_fn_with_state(
                                 config.clone(),
                                 middleware::admin,

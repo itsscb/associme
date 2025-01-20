@@ -2,10 +2,10 @@
     <div class="col-12 md:col-6">
         <div class="col-12">
             <div class="card p-fluid">
-                <h5>Member</h5>
+                <h5>Member {{edit_member.changed_at}}</h5>
                 <div class="grid p-fluid">
                     <!-- TODO: Improve Styling -->
-                    <button pButton (click)="is_edit = !is_edit"><i class="pi pi-user-edit"></i></button>
+                    <button pButton (click)="edit()"><i class="pi pi-user-edit"></i></button>
                     <div class="p-formgrid grid">
                         <div class="field col">
                             <label htmlFor="membership">Membership</label>
@@ -13,7 +13,7 @@
                             [disabled]="!is_edit"
                                 id="membership"
                                 [options]="membership_options"
-                                [(ngModel)]="member.membership_state"
+                                [(ngModel)]="edit_member.membership_state"
                             ></p-dropdown>
                         </div>
                         <div class="field col">
@@ -22,8 +22,8 @@
                             [disabled]="!is_edit"
                                 pInputText
                                 id="member_id"
-                                type="text"
-                                [(ngModel)]="member.member_id"
+                                type="number"
+                                [(ngModel)]="edit_member.member_id"
                             />
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                                     type="email"
                                     pInputText
                                     id="mail"
-                                    [(ngModel)]="member.email"
+                                    [(ngModel)]="edit_member.email"
                                 />
                             </span>
                         </div>
@@ -51,7 +51,7 @@
                                     type="tel"
                                     pInputText
                                     id="phone"
-                                    [(ngModel)]="member.phone"
+                                    [(ngModel)]="edit_member.phone"
                                 />
                             </span>
                         </div>
@@ -66,7 +66,7 @@
                                     pInputText
                                     id="last_name"
                                     type="text"
-                                    [(ngModel)]="member.last_name"
+                                    [(ngModel)]="edit_member.last_name"
                                 />
                             </span>
                         </div>
@@ -77,7 +77,7 @@
                                 pInputText
                                 id="first_name"
                                 type="text"
-                                [(ngModel)]="member.first_name"
+                                [(ngModel)]="edit_member.first_name"
                             />
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                                 [showIcon]="true"
                                 inputId="icon"
                                 [readonlyInput]="false"
-                                [(ngModel)]="member.birthday"
+                                [(ngModel)]="edit_member.birthday"
                                 [maxDate]="max_year"
                                 [disabled]="!is_edit"
                             ></p-calendar>
@@ -108,7 +108,7 @@
                                     pInputText
                                     id="street"
                                     type="text"
-                                    [(ngModel)]="member.street"
+                                    [(ngModel)]="edit_member.street"
                                 />
                             </span>
                         </div>
@@ -121,7 +121,7 @@
                                 type="text"
                                 inputmode="numeric"
                                 pattern
-                                [(ngModel)]="member.house_number"
+                                [(ngModel)]="edit_member.house_number"
                             />
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                                 id="postalcode"
                                 type="text"
                                 inputmode="numeric"
-                                [(ngModel)]="member.postalcode"
+                                [(ngModel)]="edit_member.postalcode"
                             />
                         </div>
                         <div class="field col">
@@ -144,7 +144,7 @@
                                 pInputText
                                 id="city"
                                 type="text"
-                                [(ngModel)]="member.city"
+                                [(ngModel)]="edit_member.city"
                             />
                         </div>
                     </div>
@@ -155,7 +155,7 @@
                     (click)="submit_member()"
                     pButton
                     pRipple
-                    label="{{is_new ? 'Create' : 'Update'}}"
+                    label="{{member.id ? 'Create' : 'Update'}}"
                     icon="pi pi-plus-circle"
                     class="mr-2 mb-2"
                 ></button>
