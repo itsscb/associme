@@ -2,7 +2,7 @@
     <div class="col-12 md:col-6">
         <div class="col-12">
             <div class="card p-fluid">
-                <h5>Member {{edit_member.changed_at}}</h5>
+                <h5>Member</h5>
                 <div class="grid p-fluid">
                     <!-- TODO: Improve Styling -->
                     <button pButton (click)="edit()"><i class="pi pi-user-edit"></i></button>
@@ -19,6 +19,7 @@
                         <div class="field col">
                             <label htmlFor="member_id">Member ID</label>
                             <input
+
                             [disabled]="!is_edit"
                                 pInputText
                                 id="member_id"
@@ -34,6 +35,8 @@
                             <span class="p-input-icon-left">
                                 <i class="pi pi-envelope"></i>
                                 <input
+                                [ngClass]="edit_member.email.length < 1 ? ['required']: []"
+
                                 [disabled]="!is_edit"
                                     type="email"
                                     pInputText
@@ -47,6 +50,8 @@
                             <span class="p-input-icon-left">
                                 <i class="pi pi-phone"></i>
                                 <input
+                                [ngClass]="edit_member.phone.length < 1 ? ['required']: []"
+
                                 [disabled]="!is_edit"
                                     type="tel"
                                     pInputText
@@ -62,6 +67,8 @@
                             <span class="p-input-icon-left">
                                 <i class="pi pi-user"></i>
                                 <input
+                                [ngClass]="edit_member.last_name.length < 1 ? ['required']: []"
+
                                 [disabled]="!is_edit"
                                     pInputText
                                     id="last_name"
@@ -73,6 +80,8 @@
                         <div class="field col">
                             <label for="first_name">First Name</label>
                             <input
+                            [ngClass]="edit_member.first_name.length < 1 ? ['required']: []"
+
                             [disabled]="!is_edit"
                                 pInputText
                                 id="first_name"
@@ -104,6 +113,7 @@
                                 <i class="pi pi-map-marker"></i>
 
                                 <input
+                                [ngClass]="edit_member.street.length < 1 ? ['required']: []"
                                 [disabled]="!is_edit"
                                     pInputText
                                     id="street"
@@ -115,6 +125,8 @@
                         <div class="field col-2">
                             <label htmlFor="house_number">Nr.</label>
                             <input
+                            [ngClass]="edit_member.house_number.length < 1 ? ['required']: []"
+
                             [disabled]="!is_edit"
                                 pInputText
                                 id="house_number"
@@ -129,6 +141,8 @@
                         <div class="field col-4">
                             <label htmlFor="postalcode">Postalcode</label>
                             <input
+                            [ngClass]="edit_member.postalcode.length < 1 ? ['required']: []"
+
                             [disabled]="!is_edit"
                                 pInputText
                                 id="postalcode"
@@ -140,6 +154,8 @@
                         <div class="field col">
                             <label htmlFor="city">City</label>
                             <input
+                            [ngClass]="edit_member.city.length < 1 ? ['required']: []"
+
                             [disabled]="!is_edit"
                                 pInputText
                                 id="city"
@@ -151,11 +167,12 @@
                 </div>
                 <button
 
-                [disabled]="!is_edit"
+                [ngClass]="is_edit ? [] : ['hidden']"
+                [disabled]="!generate_update_request() || (member.id.length < 1 && !validate_member(edit_member))"
                     (click)="submit_member()"
                     pButton
                     pRipple
-                    label="{{member.id ? 'Create' : 'Update'}}"
+                    label="{{member.id.length < 1 ? 'Create' : 'Update'}}"
                     icon="pi pi-plus-circle"
                     class="mr-2 mb-2"
                 ></button>

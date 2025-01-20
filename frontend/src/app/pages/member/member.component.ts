@@ -17,7 +17,7 @@ import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: "app-member",
   templateUrl: "./member.component.html",
-  // styleUrls: ["./member.component.scss"],
+  styleUrls: ["./member.component.scss"],
 })
 export class MemberComponent implements OnInit {
   constructor(
@@ -31,6 +31,8 @@ export class MemberComponent implements OnInit {
     ]);
   }
 
+  validate_member = validate_member;
+
   ngOnInit() {
     this.user_id = this.route.snapshot.paramMap.get("id");
     if (this.user_id === 'new') {
@@ -40,10 +42,10 @@ export class MemberComponent implements OnInit {
       ]);
       const member = new_member();
       this.set_member(member);
+      this.is_edit = true;
     }
     else if(this.user_id) {
       this.backend_service.get_member(this.user_id).subscribe((member) => {
-        // console.table(member);
         this.set_member(member);
         this.breadcrumb_service.setItems([
           { label: "Member", routerLink: ["/member"] },
