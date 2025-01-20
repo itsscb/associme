@@ -6,7 +6,7 @@ use axum::{
 };
 use chrono::{DateTime, Utc};
 use serde_json::json;
-use tracing::{info, instrument};
+use tracing::instrument;
 
 use crate::{
     db::{self, member::UpdateMember},
@@ -88,10 +88,7 @@ pub async fn update_member(
     let update_member = member.into_update_member(uuid, account_id);
 
     match db::member::update(&config.pool, update_member).await {
-        Ok(member) => {
-            info!(member = uuid.to_string(), "member updated");
-            (StatusCode::OK, Json(json!({"member": member}))).into_response()
-        }
+        Ok(member) => (StatusCode::OK, Json(json!({"member": member}))).into_response(),
         Err(e) => {
             tracing::error!(error = ?e, "failed to update member");
             match e {
