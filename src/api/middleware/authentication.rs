@@ -5,13 +5,14 @@ use axum::{
     response::IntoResponse,
 };
 use tracing::{error, instrument, trace, warn};
+use uuid::Uuid;
 
 use crate::{api::extract_claims_from_request, Config};
 
 #[instrument(skip(config, req, next))]
 pub async fn authentication(
     State(config): State<Config>,
-    req: Request,
+    mut req: Request,
     next: Next,
 ) -> impl IntoResponse {
     match extract_claims_from_request(&req, &config) {
@@ -26,6 +27,13 @@ pub async fn authentication(
                 return (StatusCode::UNAUTHORIZED, "invalid token").into_response();
             }
             trace!("token verified");
+
+            if let Some(id) = claims.get_claim::<Uuid>("id") {
+                req.extensions_mut().insert(id);
+            } else {
+                error!("failed to get account_id from token");
+                return StatusCode::UNAUTHORIZED.into_response();
+            }
             next.run(req).await
         }
         Err(err) => {
