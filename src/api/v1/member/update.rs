@@ -1,9 +1,10 @@
-use axum::{extract::State, http::StatusCode, response::IntoResponse, Json};
+use axum::{extract::State, http::StatusCode, response::IntoResponse, Extension, Json};
 use serde_json::json;
 use tracing::{info, instrument};
 
 use crate::{
     db::{self, member::UpdateMember},
+    errors::ApplicationError,
     Config,
 };
 
@@ -11,8 +12,10 @@ use crate::{
 #[axum::debug_handler]
 pub async fn update_member(
     State(config): State<Config>,
-    Json(member): Json<UpdateMember>,
+    Extension(account_id): Extension<uuid::Uuid>,
+    Json(mut member): Json<UpdateMember>,
 ) -> impl IntoResponse {
+    member.changed_by = account_id;
     if db::account::get_account_by_id(&config.pool, &member.changed_by.to_string())
         .await
         .is_err()
@@ -31,11 +34,18 @@ pub async fn update_member(
         }
         Err(e) => {
             tracing::error!(error = ?e, "failed to update member");
-            (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                Json(json!({"error": "failed to update member"})),
-            )
-                .into_response()
+            match e {
+                ApplicationError::NotFound => (
+                    StatusCode::NOT_FOUND,
+                    Json(json!({"error": "member not found"})),
+                )
+                    .into_response(),
+                _ => (
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    Json(json!({"error": "failed to update member"})),
+                )
+                    .into_response(),
+            }
         }
     }
 }

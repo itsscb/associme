@@ -1,4 +1,4 @@
-use axum::{extract::State, http::StatusCode, response::IntoResponse, Json};
+use axum::{extract::State, http::StatusCode, response::IntoResponse, Extension, Json};
 use serde_json::json;
 use tracing::{info, instrument};
 
@@ -11,9 +11,11 @@ use crate::{
 #[instrument(skip(config, member))]
 pub async fn create_member(
     State(config): State<Config>,
-    Json(member): Json<NewMember>,
+    Extension(account_id): Extension<uuid::Uuid>,
+    Json(mut member): Json<NewMember>,
 ) -> impl IntoResponse {
     info!("create member request");
+    member.created_by = Some(account_id);
     // return (StatusCode::OK, Json(json!(member))).into_response();
     if let Some(member_id) = member.member_id {
         if member_id <= 0 {
