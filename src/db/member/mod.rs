@@ -26,35 +26,37 @@ pub struct NewMember {
     pub street: String,
     pub house_number: String,
     pub membership_state: crate::models::member::Membership,
+    #[serde(default)]
+    pub created_by: Option<uuid::Uuid>,
 }
 
-impl NewMember {
-    #[allow(clippy::too_many_arguments)]
-    pub const fn new(
-        email: String,
-        phone: String,
-        first_name: String,
-        last_name: String,
-        member_id: Option<i32>,
-        birthday: DateTime<Utc>,
-        postalcode: String,
-        city: String,
-        street: String,
-        house_number: String,
-        membership_state: crate::models::member::Membership,
-    ) -> Self {
-        Self {
-            email,
-            phone,
-            first_name,
-            last_name,
-            member_id,
-            birthday,
-            postalcode,
-            city,
-            street,
-            house_number,
-            membership_state,
-        }
-    }
-}
+// impl NewMember {
+//     #[allow(clippy::too_many_arguments)]
+//     pub const fn new(
+//         email: String,
+//         phone: String,
+//         first_name: String,
+//         last_name: String,
+//         member_id: Option<i32>,
+//         birthday: DateTime<Utc>,
+//         postalcode: String,
+//         city: String,
+//         street: String,
+//         house_number: String,
+//         membership_state: crate::models::member::Membership,
+//     ) -> Self {
+//         Self {
+//             email,
+//             phone,
+//             first_name,
+//             last_name,
+//             member_id,
+//             birthday,
+//             postalcode,
+//             city,
+//             street,
+//             house_number,
+//             membership_state,
+//         }
+//     }
+// }

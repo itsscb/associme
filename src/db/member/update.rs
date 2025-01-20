@@ -5,21 +5,34 @@ use uuid::Uuid;
 use crate::{errors::ApplicationError, models::member::Membership};
 
 #[allow(clippy::struct_field_names)]
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Default)]
 pub struct UpdateMember {
     pub id: Uuid,
+    #[serde(default)]
     pub email: Option<String>,
+    #[serde(default)]
     pub phone: Option<String>,
+    #[serde(default)]
     pub first_name: Option<String>,
+    #[serde(default)]
     pub last_name: Option<String>,
+    #[serde(default)]
     pub member_id: Option<i32>,
+    #[serde(default)]
     pub birthday: Option<DateTime<Utc>>,
+    #[serde(default)]
     pub postalcode: Option<String>,
+    #[serde(default)]
     pub city: Option<String>,
+    #[serde(default)]
     pub street: Option<String>,
+    #[serde(default)]
     pub house_number: Option<String>,
+    #[serde(default)]
     pub membership_state: Option<Membership>,
+    #[serde(default)]
     pub resignation_date: Option<DateTime<Utc>>,
+    #[serde(default)]
     pub resignation_reason: Option<String>,
     pub changed_by: Uuid,
 }
